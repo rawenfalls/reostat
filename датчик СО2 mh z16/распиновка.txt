@@ -1,0 +1,4 @@
+(5)rx-tx
+(6)tx-rx
+(3)gnd
+(4)vin
