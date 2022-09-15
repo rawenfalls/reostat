@@ -1,0 +1,142 @@
+.hoverbutton {
+	padding: 6px 35px;
+	position: relative;
+	transition: all 500ms ease; 
+    overflow:hidden;
+}
+
+.hoverbutton:before {
+	font-family: FontAwesome;
+    content: attr(data-icon);
+	position: absolute;
+	top: 7px;
+	left: -30px;
+	transition: all 200ms ease;
+} 
+	  
+.hoverbutton:hover:before {
+	left: 7px;
+}
+
+.leftmenu {
+	position: relative;
+	transition: all 500ms ease; 
+}
+
+.leftmenu:before {
+	content:'';
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 0px;
+	height: 42px;
+	background: rgba(255,255,255,0.3);
+	transition: all 2s ease;
+} 
+.leftmenu:hover:before {
+	width: 100%;
+}
+@-webkit-keyframes bounce {
+	0%, 20%, 60%, 100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	40% {
+		-webkit-transform: translateY(-20px);
+		transform: translateY(-20px);
+	}
+
+	80% {
+		-webkit-transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+}
+.img:hover {
+	-webkit-animation: bounce 1s;
+}
+
+a.back-to-top {
+	display: none;
+	width: 60px;
+	height: 60px;
+	text-indent: -9999px;
+	position: fixed;
+	z-index: 999;
+	right: 15px;
+	bottom: 130px;
+	background: #27AE61 url("http://developer.alexanderklimov.ru/android/images/upcat.png") no-repeat 10% -30%;
+	border-radius: 30px;
+}
+a:hover.back-to-top {
+	background-color: #ff8000;
+}
+
+.material-icons.orange600 { color: #FB8C00; }
+
+h2, h3 {
+  scroll-margin-top: 55px; /* отступ от фиксированного заголовка */
+}
+
+.modal-content{
+	background-color: #ee7a13;
+}
+
+/* темный режим */
+.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+/* toggle in label designing */
+.toggle { 
+    position : relative ; 
+    display : inline-block; 
+    width : 76px; 
+    height : 32px; 
+    background-color: #F0FFFF; 
+    border-radius: 29px; 
+    border: 2px solid rgba(255,255,255,.5);
+} 
+        
+/* After slide changes */
+.toggle:after { 
+    content: ''; 
+    position: absolute; 
+    width: 28px; 
+    height: 28px; 
+    border-radius: 50%;
+	border-color: grey;
+	border-style: solid;
+    border-width: thin;
+    background-color: black; 
+	background-image: url("../cat-face-white.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 27px 27px;
+    top: 0;  
+    left: 0; 
+    transition:  all 0.5s; 
+} 
+
+/* Checkbox cheked effect */
+.checkbox:checked + .toggle::after { 
+    left : 44px;  
+	top: 0;
+	background-color: white;
+	background-image: url("../cat-face-black.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 27px 27px;
+} 
+        
+/* Checkbox cheked toggle label bg color */
+.checkbox:checked + .toggle { 
+    background-color: black;
+		
+} 
+        
+/* Checkbox vanished */
+.checkbox {  
+    display : none; 
+} 

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)https://developer.alexanderklimov.ru/arduino/sensors/hall.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Arduino: Датчик Холла</title>
+   
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="./Arduino_ Датчик Холла_files/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+<link href="./Arduino_ Датчик Холла_files/icon" rel="stylesheet">
+<link rel="stylesheet" href="./Arduino_ Датчик Холла_files/custom.css">
+    
+<link rel="icon" href="https://developer.alexanderklimov.ru/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://developer.alexanderklimov.ru/favicon.ico" type="image/x-icon">
+
+
+<style type="text/css">
+body {
+    padding-top: 60px;
+    padding-bottom: 10px;
+}
+
+#cat {
+    position: fixed;
+    bottom: 0;
+    right: 220px;
+    width: 146px;
+    height: 55px;
+}
+
+#cat:hover .cat-itself {
+  height:103px;
+}
+
+#cat:hover .cat-eye {
+  display:none !important
+}
+
+.cat-paws {
+    position: absolute;
+    right: 0;
+    bottom: -4px;
+    width: 132px;
+    height: 33px;
+    z-index: 2;
+    background: url(//developer.alexanderklimov.ru/blocks/footer-cat-paws.png) no-repeat right bottom;
+}
+
+.cat-itself {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 125px;
+    height: 55px;
+    z-index: 0;
+    background: url(//developer.alexanderklimov.ru/blocks/footer-cat-itself.png) no-repeat;
+    transition: all .1s .1s ease-out;
+}
+
+.cat-itself-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.cat-eye {
+    position: absolute;
+    display: none;
+    width: 28px;
+    height: 28px;
+    background: url(//developer.alexanderklimov.ru/blocks/footer-cat-eye.png);
+}
+
+#cat-eye-left {
+    left: 25px;
+    top: 23px;
+}
+
+#cat-eye-right {
+    left: 74px;
+    top: 23px;
+}
+
+.cat-eyeball {
+    position: absolute;
+    left: 7.5px;
+    top: 7.5px;
+    width: 13px;
+    height: 13px;
+    background: url(//developer.alexanderklimov.ru/blocks/footer-cat-eyeball.png);
+}
+</style>
+
+<link href="./Arduino_ Датчик Холла_files/css" rel="stylesheet">
+
+<!--
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+-->
+</head>
+
+<body class="vsc-initialized">
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link " href="http://developer.alexanderklimov.ru/android/">Android <span class="sr-only">(current)</span></a>
+		<a class="nav-item nav-link " href="http://developer.alexanderklimov.ru/python/">Python</a>
+        <a class="nav-item nav-link " href="http://developer.alexanderklimov.ru/dotnet/">C#/Visual Basic</a>
+        <a class="nav-item nav-link " href="http://developer.alexanderklimov.ru/windowsphone/wp.php">Windows Phone</a>
+        <a class="nav-item nav-link " href="http://developer.alexanderklimov.ru/php">PHP</a>
+        <a class="nav-item nav-link active" href="http://developer.alexanderklimov.ru/arduino">Arduino</a>
+        <a class="nav-item nav-link " href="http://android-klimov.blogspot.ru/">Блог</a>
+		
+      </div>
+	    <div class="navbar-text ml-auto mt-0 p-0">
+          <input type="checkbox" id="switch" class="checkbox" onclick="myFunction()"> 
+          <label for="switch" class="toggle"></label> 
+        </div>
+	<div class="navbar-text p-2">
+	  
+      <a data-toggle="modal" href="https://developer.alexanderklimov.ru/arduino/sensors/hall.php#myModal" class="navbar-link"><i class="material-icons orange600" title="Котаны, сюда!">pets</i></a>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-4">
+        <p class="h6" style="font-family: &#39;Pattaya&#39;, sans-serif; font-size: 2.5em; color: #ff8000;">Освой Arduino играючи</p>
+
+		<p class="text-center"><a style="font-size: 2.0em; color: red;" href="http://developer.alexanderklimov.ru/">Сайт Александра Климова</a></p>
+				
+    </div><!--/span-->
+	
+	<div class="col-md-1">
+	<img src="./Arduino_ Датчик Холла_files/header-cat.png" alt="Шкодим">
+	</div>
+    
+	<div class="col-md-5">
+        <p style="color:green; font-style: italic; font-size: small;">
+		/* Моя кошка замечательно разбирается в программировании. Стоит мне объяснить проблему ей - и все становится ясно. */<br>John Robbins, Debugging Applications, Microsoft Press, 2000
+		</p>
+    </div>
+
+</div><!--/row-->
+</div><noindex><!--Rating@Mail.ru COUNTER--><script language="JavaScript" type="text/javascript"><!--
+d=document;var a='';a+=';r='+escape(d.referrer)
+js=10//--></script><script language="JavaScript1.1" type="text/javascript"><!--
+a+=';j='+navigator.javaEnabled()
+js=11//--></script><script language="JavaScript1.2" type="text/javascript"><!--
+s=screen;a+=';s='+s.width+'*'+s.height
+a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth)
+js=12//--></script><script language="JavaScript1.3" type="text/javascript"><!--
+js=13//--></script><script language="JavaScript" type="text/javascript"><!--
+d.write('<IMG src="//db.c7.b3.a0.top.mail.ru/counter'+
+'?id=228158;js='+js+a+';rand='+Math.random()+
+'" height="1" width="1" alt="top.mail.ru" border="0" />')
+if(11<js)d.write('<'+'!-- ')//--></script><img src="https://db.c7.b3.a0.top.mail.ru/counter?id=228158;js=13;r=https%3A//yandex.ru/;j=false;s=1920*1080;d=24;rand=0.9979098203489525" height="1" width="1" alt="top.mail.ru" border="0"><!-- <noscript><img
+src="//db.c7.b3.a0.top.mail.ru/counter?js=na;id=228158"
+height="1" width="1" alt="top.mail.ru" border="0" /></noscript><script language="JavaScript" type="text/javascript"><!--
+if(11<js)d.write('--'+'>')//--><!--/COUNTER--></noindex>
+<div class="container-fluid">
+    
+	<div class="row">
+        <!--левое меню -->
+		<div class="col-md-2 well-lg">
+            <div class="sidebar panel panel-default">
+            <div class="list group">
+<a href="http://developer.alexanderklimov.ru/arduino/" class="list-group-item list-group-item-action ">Главная</a>
+<a href="http://developer.alexanderklimov.ru/arduino/examples.php" class="list-group-item list-group-item-action ">Примеры</a>
+<a href="http://developer.alexanderklimov.ru/arduino/libraries/" class="list-group-item list-group-item-action ">Библиотеки</a>
+<a href="http://developer.alexanderklimov.ru/arduino/playground/" class="list-group-item list-group-item-action ">Playground</a>
+<a href="http://developer.alexanderklimov.ru/arduino/sensors/" class="list-group-item list-group-item-action active">Датчики</a>
+<a href="http://developer.alexanderklimov.ru/arduino/components/" class="list-group-item list-group-item-action ">Компоненты</a>
+<a href="http://developer.alexanderklimov.ru/arduino/shields/" class="list-group-item list-group-item-action ">Shields</a>
+<a href="http://developer.alexanderklimov.ru/arduino/esp32/" class="list-group-item list-group-item-action ">ESP32</a>
+<a href="http://developer.alexanderklimov.ru/arduino/m5stack/" class="list-group-item list-group-item-action ">M5Stack</a>
+<a href="http://developer.alexanderklimov.ru/arduino/docs/" class="list-group-item list-group-item-action ">Документация</a>
+<a href="http://developer.alexanderklimov.ru/arduino/articles/" class="list-group-item list-group-item-action ">Статьи</a>
+<a href="http://developer.alexanderklimov.ru/arduino/electronic/" class="list-group-item list-group-item-action ">Электроника</a>
+</div>            </div><!--/.well -->
+        </div><!--/span-->
+
+        <div class="col-md-8">
+
+		<div class="row">
+            <div class="col-md-12">
+			
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<h5 class="modal-title" id="myModalLabel">Котаны, читайте на здоровье!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Статья проплачена кошками - всемирно известными производителями котят.</p>
+        <p>Если статья вам понравилась, то можете <a href="http://developer.alexanderklimov.ru/donate.php">поддержать проект</a>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>      
+<h1 class="text-info">Датчик Холла</h1>
+
+<p>
+<a href="https://developer.alexanderklimov.ru/arduino/sensors/hall.php#OH137">Датчик Холла OH137</a><br>
+<a href="https://developer.alexanderklimov.ru/arduino/sensors/hall.php#KY-003">Модуль KY-003</a><br>
+<a href="https://developer.alexanderklimov.ru/arduino/sensors/hall.php#KY-024">Модуль KY-024</a><br>
+<a href="https://developer.alexanderklimov.ru/arduino/sensors/hall.php#KY-035">Модуль KY-035</a><br>
+</p>
+
+<h2 class="text-info" id="OH137">Датчик Холла OH137</h2>
+
+<p>Униполярный датчик Холла OH137 - датчик, работающий на эффекте Холла - при помещении в магнитное поле некоторого проводника с постоянным током, в этом проводнике возникает поперечная разность потенциалов.</p>
+
+<img src="./Arduino_ Датчик Холла_files/hall2.png" alt="OH137">
+
+<ul>
+<li>Тип: Униполярный
+</li><li>Рабочий ток источника питания: 5 mA
+</li><li>Максимальный выходной ток: 25 mA
+</li><li>Рабочая точка, макс.: 18 mT
+</li><li>Точка сброса мин.: 2 mT
+</li><li>Рабочая температура: -40...85 C
+</li><li>Рабочее напряжение питания: 24 V
+</li><li>Тип корпуса: TO-92
+</li><li>Тип выхода: open-collector
+</li><li>Напряжение питания: 4.5 V - 24 V
+</li></ul>
+
+<p>Подключение показано на рисунке.</p>
+
+<img src="./Arduino_ Датчик Холла_files/hall3.png" alt="OH137">
+
+<p>Показания сигнала зависят от полюса магнита (поэтому он называется униполярным).</p>
+
+<img src="./Arduino_ Датчик Холла_files/hall4.png" alt="OH137">
+
+<p>При подключении к плате используйте резистор на 820 Ohm и конденсатор на 20 pF.</p>
+
+<img src="./Arduino_ Датчик Холла_files/hall5.png" alt="OH137">
+
+<pre class="bg-light"><code>
+//OH137 Hall Sensor Tutorial
+
+int hallPin = 2; // Use Pin 0 as our Input
+int hallVal = HIGH; // This is where we record the OH137 Input
+boolean isMagneticField = false;
+
+unsigned long lastDetectTime; // Record the time that we measured a Magnetic Field
+int magFieldHoldTime = 500; // How long to hold the magnetic field detection on.
+
+void setup ()
+{
+    Serial.begin(9600);  
+    pinMode (hallPin, INPUT);
+}
+  
+void loop ()
+{
+    hallVal = digitalRead (hallPin);
+  
+    if (hallVal == LOW) // means magnetic field detected
+    {
+        lastDetectTime = millis(); // record the last time mag field was detected
+        if (!isMagneticField)
+		{
+            Serial.println("MAGNETIC SOUTH POLE DETECTED");
+            isMagneticField = true;
+        }
+    }
+    else
+    {
+        if( (millis()-lastDetectTime) &gt; magFieldHoldTime  &amp;&amp;  isMagneticField)
+		{
+            Serial.println("no magnetic field");
+            isMagneticField = false;
+        }
+    }
+}
+</code></pre>
+
+<h2 class="text-info" id="KY-003">Модуль KY-003</h2>
+
+<p>Датчик Холла (модуль <b>KY-003</b>)  выполнен на базе элемента "44E" и позволяет обнаруживать магнитное поле. Если рядом с датчиком нет магнитного поля, то на сигнальном выходе датчика имеется высокий уровень и наоборот если поле присутствует, то на выходе низкий уровень напряжения, таким образом датчик имеет цифровой выход.</p>
+
+<p>На плате модуля есть светодиод, который горит когда есть магнитное воздействие. Существуют также аналоговый (KY-035) и комбинированный датчик Холла (KY-024).</p>
+
+<p><img src="./Arduino_ Датчик Холла_files/hall.jpg" alt="KY-003"></p>
+
+<p>Имеет три вывода: сигнальный вывод <b>S</b> подключается к цифровому выводу платы, средний к питанию, а крайний левый к земле.</p>
+
+<pre class="bg-light"><code>
+KY-003 | Arduino
+----------------
+     S | D
+     + | 5V 		 
+     - | GND 
+</code></pre>
+
+<p>При появлении магнитного поля будет включаться светодиод на выводе 13.</p>
+
+<pre class="bg-light"><code>
+int ledPin = 13;
+int hallPin = 3;
+int val;
+
+void setup()
+{
+  pinMode(ledPin, OUTPUT);
+  pinMode(hallPin, INPUT);
+}
+
+void loop()
+{
+  val = digitalRead(hallPin);
+  if (val == LOW) //when magnetic field is detected, turn led on
+  {
+    digitalWrite(ledPin, HIGH);
+  }
+  else
+  {
+    digitalWrite(ledPin, LOW);
+  }
+}
+</code></pre>
+
+<p>Входит в состав набора <a href="https://developer.alexanderklimov.ru/arduino/sensors">Набор из 37 датчиков</a></p>
+
+<h2 class="text-info" id="KY-024">Модуль KY-024</h2>
+
+<p><img src="./Arduino_ Датчик Холла_files/ky-024.jpg" alt="Linear magnetic Hall sensors KY-024"></p>
+
+<p>Модуль <b>KY-024</b> является линейным датчиком Холла (датчик магнитного поля), способный обрабатывать цифровой и аналоговые сигналы.</p>
+
+<p>Цифровой выход выдаёт логический 0 если магнита рядом нет и логическую 1, если магнит в поле чувствительности датчика. А на аналоговом выходе можно отслеживать изменение напряжения, когда магнитное поле есть и когда его нет.</p> 
+
+<p>Также на модуле расположены два красных светодиода, один сигнализирует о наличии питания, другой загорается при срабатывании датчика. Для настройки датчика на плате модуля имеется подстроечный резистор для регулировки чувствительности датчика - можно менять расстояние до магнита, при котором датчик сработает.</p>
+
+<p>Модуль определяет присутствие поля постоянного магнита или магнитного поля катушки проволоки, подключённой к постоянному току. Часто применяется для определения скорости вращения различных деталей механизмов.</p>
+
+<p>Имеет четыре вывода: На <b>+</b> подаём 5В, на <b>G</b> – землю (GND), <b>A0</b> – аналоговый выход, D0 – цифровой выход.</p>
+
+<pre class="bg-light"><code>
+KY-024 | Arduino
+----------------
+    A0 | A0
+     G | GND 
+     + | 5V
+    D0 | D	 
+</code></pre>
+
+<p>Скетч.</p>
+
+<pre class="bg-light"><code>
+const int digital = 2; // Цифровой пин 2
+const int analog = A0; // Аналоговый пин A0
+ 
+void setup()
+{
+    pinMode(digital, INPUT);
+    Serial.begin(9600);
+}
+ 
+void loop()
+{
+    Serial.print("Digital: ");
+    Serial.print(digitalRead(digital)); // Цифровой сигнал с датчика
+    Serial.print(", Analog: ");
+    Serial.println(analogRead(analog)); // Аналоговый сигнал с датчика
+    delay(500);
+}
+</code></pre>
+
+<p>Входит в состав набора <a href="https://developer.alexanderklimov.ru/arduino/sensors">Набор из 37 датчиков</a></p>
+
+<h2 class="text-info" id="KY-035">Модуль KY-035</h2>
+
+<p>Аналоговый датчик Холла <b>KY-035</b> внешне практически не отличается от датчика <b>KY-003</b>, только у него нет встроенного светодиода (стоит пустая заглушка).</p>
+
+<p>Других отличий нет - схема соединений и код остаётся без изменений.</p>
+
+<p><img src="./Arduino_ Датчик Холла_files/ky-035.jpg" alt="KY-035"></p>
+
+<p>Входит в состав набора <a href="https://developer.alexanderklimov.ru/arduino/sensors">Набор из 37 датчиков</a></p>
+
+<h2 class="text-info">Дополнительные материалы</h2>
+
+<p>На плате <a href="https://developer.alexanderklimov.ru/arduino/esp32/">ESP32</a> есть встроенный датчик Холла.</p>
+
+<h5 class="text-success">Реклама</h5>
+
+<script async="" src="./Arduino_ Датчик Холла_files/f.txt"></script>
+<!-- 468x60Klimov, создано 12.07.09 -->
+<ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px" data-ad-client="ca-pub-4224968932772057" data-ad-slot="3174401079"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+	<div id="cat">
+		<div class="cat-paws"></div>
+			<div class="cat-itself-wrap">
+				<div class="cat-itself">
+					<div id="cat-eye-left" class="cat-eye" style="display: block;">
+						<div class="cat-eyeball" style="margin-top: 6.99995px; margin-left: 0.0248767px;"></div>
+					</div>
+					<div id="cat-eye-right" class="cat-eye" style="display: block;">
+						<div class="cat-eyeball" style="margin-top: 4.99995px; margin-left: 0.0248767px;"></div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+<p>
+
+</p>
+
+</div><!--/span-->
+        </div><!--/row-->	
+		  
+        </div><!--/span-->
+		
+		<div class="col-md-2">
+            <div class="well sidebar-nav">
+    <h4><span class="label label-info">Реклама</span></h4>
+    <script type="text/javascript">
+    google_ad_client = "ca-pub-4224968932772057";
+    google_ad_slot = "8217353101";
+    google_ad_width = 160;
+    google_ad_height = 600;
+</script>
+<!-- 160 x 600 -->
+<script type="text/javascript" src="./Arduino_ Датчик Холла_files/f(1).txt">
+</script>
+</div><!--/.well -->        </div><!--/span-->
+		
+</div><!--/row-->
+	  
+<hr>
+	  
+<footer class="footer row">
+	<div class="col-10">
+        <noindex>
+      <span>
+	    © 2022 <a class="text-secondary" href="mailto:rusproject@mail.ru">А.Климов</a>
+		<!--
+		<a href="https://www.facebook.com/DeveloperAlexanderKlimovRU/"><img src="http://developer.alexanderklimov.ru/images/facebook.svg" alt="Facebook" width="16" height="16"></a>
+      </span>
+	
+	<a href="http://feeds.feedburner.com/alexanderklimov/VJcl"><img src="http://developer.alexanderklimov.ru/kot-2-rss-100.png" border="0" width="75"></a>
+	-->
+</span></noindex>
+   </div>
+
+<div class="col">
+<span class="align-bottom">
+<!-- Rating@Mail.ru logo -->
+<a href="https://top.mail.ru/jump?from=228158">
+<img src="./Arduino_ Датчик Холла_files/counter" style="border:0;" height="18" width="88" alt="Рейтинг@Mail.ru"></a>
+<!-- //Rating@Mail.ru logo -->
+</span>	
+</div>
+<!--
+<div class="col">
+
+    <img src="http://developer.alexanderklimov.ru/images/cat_bottom.png"/>
+	
+</div>
+-->
+</footer>
+
+</div><!--/.fluid-container--><!-- Placed at the end of the document so the pages load faster -->
+<script src="./Arduino_ Датчик Холла_files/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<script src="./Arduino_ Датчик Холла_files/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="./Arduino_ Датчик Холла_files/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="./Arduino_ Датчик Холла_files/backtotop.js"></script>
+
+<script>
+$(function()
+{
+	var b = $("#cat-eye-left"), k = b.find("div"), h=$("#cat-eye-right"), l=h.find("div");
+	b.show();
+	h.show();
+	var d = b.offset().left+37, c = b.offset().top+15, f, e, g=!1;
+	$("body").mousemove(function(a){
+		if(!g){
+		    g=!0;
+            var b = a.pageX;
+			a = a.pageY;
+            e = 6*(a-c)/Math.sqrt((b-d)*(b-d)+(a-c)*(a-c))+c;
+		    f =(e-c)*(b-d)/(a-c)+d;
+		    k.css({marginTop:e-c+1+"px",marginLeft:f-d+"px"});
+            l.css({marginTop:e-c-1+"px",marginLeft:f-d+"px"});g=!1
+		}
+	});
+$("#cat").mousemove(function(a){a.stopPropagation();return!1})});
+
+var darkMode = false;
+
+function funonload() {
+	//var boolValue = (stringValue =="true");   //returns true
+    mode = localStorage.getItem("darkMode");
+	darkMode = (mode =="true");
+	//console.log(localStorage.getItem("darkMode"));
+	if(darkMode == true){
+		var element = document.body;
+        element.classList.toggle("dark-mode");
+		//element.classList.checkbox.checked = true;
+		document.getElementById("switch").checked = true;
+	}
+} 
+
+window.onload = funonload;
+
+function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+   darkMode = !darkMode
+   localStorage.setItem("darkMode", darkMode);
+}
+</script>
+
+</body></html>
